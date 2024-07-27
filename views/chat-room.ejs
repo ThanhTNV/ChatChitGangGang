@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg" href="/images/fav.svg">
+    <link rel="icon" type="image/svg" href="/images/fav.svg" />
     <title>Chat Chit Gang Gang</title>
     <style>
       body {
@@ -25,7 +25,9 @@
         overflow: hidden;
       }
 
-      h1, h2, h3 {
+      h1,
+      h2,
+      h3 {
         text-align: center;
         margin: 10px 0;
       }
@@ -74,12 +76,18 @@
       button:hover {
         background: #0056b3;
       }
+
+      #user-count {
+        text-align: center;
+        margin: 10px 0;
+      }
     </style>
   </head>
   <body>
     <h1>CHAT CHIT GANG GANT</h1>
     <h2>Room Chat</h2>
-    <h3 id="username"> <%= user %> </h3>
+    <h3 id="username"><%= user %></h3>
+    <div id="user-count">Users in chat: 0</div>
     <div id="chat-room">
       <ul id="messages"></ul>
       <form id="form-chat">
@@ -96,24 +104,26 @@
     const message = document.querySelector("#message");
     const messages = document.querySelector("#messages");
     const sending_user = document.querySelector("#username");
+    const userCount = document.querySelector("#user-count");
+
     formChat.addEventListener("submit", (event) => {
       event.preventDefault();
       if (message.value) {
         socket.emit("chat-message", {
-            user: sending_user.textContent,
-            message: message.value
+          user: sending_user.textContent,
+          message: message.value,
         });
         message.value = "";
       }
     });
 
-    
     socket.on("chat-message", (data) => {
       const item = document.createElement("li");
       const msg = `${data.user}: ${data.message}`;
       item.textContent = msg;
       messages.appendChild(item);
       messages.scrollTo(0, document.body.scrollHeight);
+      userCount.textContent = `Users in chat: ${data.amount}`;
     });
   </script>
 </html>
