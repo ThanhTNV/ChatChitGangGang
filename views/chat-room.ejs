@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Chit Gang Gang</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      #chat-room {
+        width: 400px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      h1, h2, h3 {
+        text-align: center;
+        margin: 10px 0;
+      }
+
+      #messages {
+        list-style-type: none;
+        padding: 10px;
+        height: 300px;
+        overflow-y: scroll;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+      }
+
+      #messages li {
+        padding: 8px;
+        margin: 5px 0;
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      #form-chat {
+        display: flex;
+        border-top: 1px solid #ccc;
+      }
+
+      #message {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      #message:focus {
+        outline: none;
+      }
+
+      button {
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CHAT CHIT GANG GANT</h1>
+    <h2>Room Chat</h2>
+    <h3 id="username"> <%= user %> </h3>
+    <div id="chat-room">
+      <ul id="messages"></ul>
+      <form id="form-chat">
+        <input type="text" id="message" placeholder="Nhập tin nhắn của bạn" />
+        <button>Gửi</button>
+      </form>
+    </div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    const formChat = document.querySelector("#form-chat");
+    const message = document.querySelector("#message");
+    const messages = document.querySelector("#messages");
+    const sending_user = document.querySelector("#username");
+    formChat.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (message.value) {
+        socket.emit("chat-message", {
+            user: sending_user.textContent,
+            message: message.value
+        });
+        message.value = "";
+      }
+    });
+
+    
+    socket.on("chat-message", (data) => {
+      const item = document.createElement("li");
+      const msg = `${data.user}: ${data.message}`;
+      item.textContent = msg;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  </script>
+</html>
