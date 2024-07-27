@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg" href="/images/fav.svg">
     <title>Chat Chit Gang Gang</title>
     <style>
       body {
@@ -112,7 +113,7 @@
       const msg = `${data.user}: ${data.message}`;
       item.textContent = msg;
       messages.appendChild(item);
-      window.scrollTo(0, document.body.scrollHeight);
+      messages.scrollTo(0, document.body.scrollHeight);
     });
   </script>
 </html>
