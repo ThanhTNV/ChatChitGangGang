@@ -12,6 +12,4 @@ router.post("/join-chat", function (req, res, next) {
   res.render("chat-room", { user: name });
 });
 
-
-
 module.exports = router;
